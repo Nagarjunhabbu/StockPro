@@ -131,8 +131,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units = math.Trunc(req.Amount / inv[i].UnitPrice)
 						} else {
 							units = req.Amount / inv[i].UnitPrice
-							pow := math.Pow(10, float64(2))
-							units = pow * units
+							units = TwoDecimalPoint(units)
 						}
 
 						newInvOpp := models.Opportunities{
@@ -149,10 +148,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units1 = math.Trunc((req.Amount / 2) / inv[i].UnitPrice)
 						} else {
 							units1 = (req.Amount / 2) / inv[i].UnitPrice
-							pow := math.Pow(10, float64(2))
-							digit := pow * units1
-							round := math.Floor(digit)
-							units1 = round / pow
+							units1 = TwoDecimalPoint(units1)
 						}
 						newInvOpp1 := models.Opportunities{
 							InvType: string(inv[i].InvType),
@@ -164,6 +160,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units2 = math.Trunc((req.Amount / 2) / inv[j].UnitPrice)
 						} else {
 							units2 = (req.Amount / 2) / inv[j].UnitPrice
+							units2 = TwoDecimalPoint(units2)
 						}
 						newInvOpp2 := models.Opportunities{
 							InvType: string(inv[j].InvType),
@@ -186,6 +183,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units = math.Trunc(req.Amount / inv[i].UnitPrice)
 						} else {
 							units = req.Amount / inv[i].UnitPrice
+							units = TwoDecimalPoint(units)
 						}
 						newInvOpp := models.Opportunities{
 							InvType: string(inv[i].InvType),
@@ -201,6 +199,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units1 = math.Trunc((req.Amount / 2) / inv[i].UnitPrice)
 						} else {
 							units1 = (req.Amount / 2) / inv[i].UnitPrice
+							units1 = TwoDecimalPoint(units1)
 						}
 						newInvOpp1 := models.Opportunities{
 							InvType: string(inv[i].InvType),
@@ -212,6 +211,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units2 = math.Trunc((req.Amount / 2) / inv[j].UnitPrice)
 						} else {
 							units2 = (req.Amount / 2) / inv[j].UnitPrice
+							units2 = TwoDecimalPoint(units2)
 						}
 						newInvOpp2 := models.Opportunities{
 							InvType: string(inv[j].InvType),
@@ -234,6 +234,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units = math.Trunc(req.Amount / inv[i].UnitPrice)
 						} else {
 							units = req.Amount / inv[i].UnitPrice
+							units = TwoDecimalPoint(units)
 						}
 						newInvOpp := models.Opportunities{
 							InvType: string(inv[i].InvType),
@@ -250,6 +251,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units1 = math.Trunc((req.Amount / 2) / inv[i].UnitPrice)
 						} else {
 							units1 = (req.Amount / 2) / inv[i].UnitPrice
+							units1 = TwoDecimalPoint(units1)
 						}
 						newInvOpp1 := models.Opportunities{
 							InvType: string(inv[i].InvType),
@@ -261,6 +263,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units2 = math.Trunc((req.Amount / 2) / inv[j].UnitPrice)
 						} else {
 							units2 = (req.Amount / 2) / inv[j].UnitPrice
+							units2 = TwoDecimalPoint(units2)
 						}
 						newInvOpp2 := models.Opportunities{
 							InvType: string(inv[j].InvType),
@@ -282,6 +285,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units = math.Trunc(req.Amount / inv[i].UnitPrice)
 						} else {
 							units = req.Amount / inv[i].UnitPrice
+							units = TwoDecimalPoint(units)
 						}
 						newInvOpp := models.Opportunities{
 							InvType: string(inv[i].InvType),
@@ -298,6 +302,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units1 = math.Trunc((req.Amount / 2) / inv[i].UnitPrice)
 						} else {
 							units1 = (req.Amount / 2) / inv[i].UnitPrice
+							units1 = TwoDecimalPoint(units1)
 						}
 						newInvOpp1 := models.Opportunities{
 							InvType: string(inv[i].InvType),
@@ -309,6 +314,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units2 = math.Trunc((req.Amount / 2) / inv[j].UnitPrice)
 						} else {
 							units2 = (req.Amount / 2) / inv[j].UnitPrice
+							units2 = TwoDecimalPoint(units1)
 						}
 						newInvOpp2 := models.Opportunities{
 							InvType: string(inv[j].InvType),
@@ -328,4 +334,13 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 
 	return opportunities
 
+}
+
+//function to round off decimal value to 2 points
+func TwoDecimalPoint(units float64) float64 {
+	pow := math.Pow(10, float64(2))
+	digit := pow * units
+	round := math.Floor(digit)
+	units = round / pow
+	return units
 }
