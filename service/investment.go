@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"stockpro/models"
@@ -10,7 +11,7 @@ type ServiceInvestment struct {
 }
 
 //function to get top 5 investment opportinties
-func (t ServiceInvestment) GetInvestmentListByType(invtype string) map[string][]models.Investment {
+func (t ServiceInvestment) GetInvestmentListByType(invtype string) (map[string][]models.Investment, error) {
 	inv := models.Investments
 
 	var res []models.Investment
@@ -33,7 +34,10 @@ func (t ServiceInvestment) GetInvestmentListByType(invtype string) map[string][]
 	investment["3 Year Return"] = ret3Yr
 	investment["5 Year Return"] = ret5Yr
 
-	return investment
+	if len(ret1Yr) == 0 && len(ret3Yr) == 0 && len(ret5Yr) == 0 {
+		return nil, errors.New("No Investment Suggestions Available")
+	}
+	return investment, nil
 
 }
 
@@ -84,7 +88,7 @@ func GetYearReturns(inv []models.Investment, invYear int) []models.Investment {
 }
 
 //func to get portfolio of investments based on required RoI
-func (t ServiceInvestment) GetInvOpportunities(request models.InvRequest) map[string][][]models.Opportunities {
+func (t ServiceInvestment) GetInvOpportunities(request models.InvRequest) (map[string][][]models.Opportunities, error) {
 	inv := models.Investments
 
 	var res []models.Investment
@@ -104,12 +108,19 @@ func (t ServiceInvestment) GetInvOpportunities(request models.InvRequest) map[st
 	ret5Yr := GetInvOpportunitiesByType(res, request, 5)     //func call to get investment opportunities based on 5 year return
 	lastYrRet := GetInvOpportunitiesByType(res, request, -1) //func call to get investment opportunities based on LastTwele Months return
 
+	if len(ret1Yr) == 0 && len(ret3Yr) == 0 && len(ret5Yr) == 0 && len(lastYrRet) == 0 {
+		return nil, errors.New("No Investment Opportunities are available!")
+	}
 	investment["1 Year Return"] = ret1Yr
 	investment["3 Year Return"] = ret3Yr
 	investment["5 Year Return"] = ret5Yr
 	investment["Last Year Return"] = lastYrRet
 
-	return investment
+	if investment == nil {
+		return nil, errors.New("No Investment Opportunities are available for the requested RoI!")
+	}
+
+	return investment, nil
 
 }
 
@@ -329,7 +340,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 		}
 
 	default:
-		fmt.Println("Invalid")
+		fmt.Println("Invalid Option")
 	}
 
 	return opportunities

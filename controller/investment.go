@@ -17,7 +17,10 @@ func (h InvestmentController) GetInvestmentListByType(c echo.Context) error {
 
 	invType := c.QueryParam("invType")
 
-	val := h.Service.GetInvestmentListByType(invType)
+	val, err := h.Service.GetInvestmentListByType(invType)
+	if err != nil {
+		return c.JSON(http.StatusNotFound, err.Error())
+	}
 
 	var r models.Response
 	r.Code = http.StatusOK
@@ -32,7 +35,10 @@ func (h InvestmentController) GetInvOpportunities(c echo.Context) error {
 	if err := c.Bind(&request); err != nil {
 		return err
 	}
-	res := h.Service.GetInvOpportunities(request)
+	res, err := h.Service.GetInvOpportunities(request)
+	if err != nil {
+		return c.JSON(http.StatusNotFound, err.Error())
+	}
 
 	var r models.Response
 	r.Code = http.StatusOK
