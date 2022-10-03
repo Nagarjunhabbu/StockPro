@@ -35,7 +35,7 @@ func (t ServiceInvestment) GetInvestmentListByType(invtype string) (map[string][
 	investment["5 Year Return"] = ret5Yr
 
 	if len(ret1Yr) == 0 && len(ret3Yr) == 0 && len(ret5Yr) == 0 {
-		return nil, errors.New("No Investment Suggestions Available")
+		return nil, errors.New("no investment suggestions available")
 	}
 	return investment, nil
 
@@ -109,7 +109,7 @@ func (t ServiceInvestment) GetInvOpportunities(request models.InvRequest) (map[s
 	lastYrRet := GetInvOpportunitiesByType(res, request, -1) //func call to get investment opportunities based on LastTwele Months return
 
 	if len(ret1Yr) == 0 && len(ret3Yr) == 0 && len(ret5Yr) == 0 && len(lastYrRet) == 0 {
-		return nil, errors.New("No Investment Opportunities are available!")
+		return nil, errors.New("no investment suggestions available")
 	}
 	investment["1 Year Return"] = ret1Yr
 	investment["3 Year Return"] = ret3Yr
@@ -117,7 +117,7 @@ func (t ServiceInvestment) GetInvOpportunities(request models.InvRequest) (map[s
 	investment["Last Year Return"] = lastYrRet
 
 	if investment == nil {
-		return nil, errors.New("No Investment Opportunities are available for the requested RoI!")
+		return nil, errors.New("no investment suggestions available")
 	}
 
 	return investment, nil
@@ -325,7 +325,7 @@ func GetInvOpportunitiesByType(inv []models.Investment, req models.InvRequest, i
 							units2 = math.Trunc((req.Amount / 2) / inv[j].UnitPrice)
 						} else {
 							units2 = (req.Amount / 2) / inv[j].UnitPrice
-							units2 = TwoDecimalPoint(units1)
+							units2 = TwoDecimalPoint(units2)
 						}
 						newInvOpp2 := models.Opportunities{
 							InvType: string(inv[j].InvType),
